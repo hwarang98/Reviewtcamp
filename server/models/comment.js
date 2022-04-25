@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
     body: DataTypes.TEXT,
     class: DataTypes.INTEGER,
     sort: DataTypes.INTEGER,
-    created_at: DataTypes.DATE,
-    updated_at: DataTypes.DATE
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
   }, {
     sequelize,
-    modelName: 'comment',
+    modelName: 'comments',
   });
   return comment;
 };

@@ -1,38 +1,59 @@
-const { user } = require('../../models'); 
+const { users } = require('../../models'); 
 const { generateAccessToken } = require('../tokenFunction/index');
+const crypto = require('crypto')
 
-/*
-console.log(user) 
-원가입을하면 DB user table 에 정보가 담겨야함
-*/
-module.exports = (req, res) => {
+module.exports = async(req, res) => {
   // TODO: 회원가입 구현
-  // console.log(req.body)
   const { name, email, password } = req.body;
-  
-  if(name === undefined || email === undefined || password === undefined){
-    // name, email, password 중 하나라도 요청에서 제공되지 않을경우 422(unprocessable entity) 응답을 돌려줘야함.
+  if(!name || !email || !password){
     return res.status(422).send('insufficient parameters supplied')
   }
-  user.findOne({ 
-    where: { email }, 
-  })
-  .then(async (data) => {
-    if(!data){
-      // data에 정보가 없을때 user의 정보를 생성
-      await user.create({ 
-        name: name,
-        email: email,
-        password: password
+  const userData1 = await users.findOne({ where: { email } });
+  const userData2 = await users.findOne({ where: { name } });
+  console.log('email', email)
+  console.log('name', name)
+
+  if(userData1 && userData2){
+    return res.status(202).json({ message: '현재 이메일 및 사용자 이름을 사용하고 있습니다.' })
+  }
+  else if(userData1){
+    res.status(202).json({
+      message: '이메일 사용중입니다.'
     })
-    .then((crateData) => {
-      const accessToken = generateAccessToken(crateData);
-      // console.log('accessToken: ', accessToken);
-      return res.cookie('jwt', accessToken).status(200).send({ message: 'ok' });
-      })
-    }
-    return res.status(409).send('email exists')
-  })
+  }
+  else if(userData2){
+    res.status(202).json({
+      message: '이름이 존재합니다.'
+    })    
+  }
+  else{
+    const createSalt = () => crypto.randomBytes(64).toString("hex");
+
+    const createHashedPassword = (password) => {
+      const salt = createSalt();
+
+      const hashedPassword = crypto
+        .pbkdf2Sync(password, salt, 1, 64, "sha512")
+        .toString("hex");
+      return { hashedPassword, salt };
+    };
+
+    const { hashedPassword, salt } = createHashedPassword(password);
+
+    await users.create({
+      email,
+      name,
+      password: hashedPassword,
+      salt
+    })
+    .then((data) => {
+      console.log('✅ data: ', data)
+      delete data.dataValues.password;
+      delete data.dataValues.salt;
+      res.status(200).json({ message : 'ok' })
+    })
+  }
+
 };
 
 

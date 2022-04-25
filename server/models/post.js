@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.STRING,
     user_name: DataTypes.STRING,
     body: DataTypes.TEXT,
-    created_at: DataTypes.DATE,
-    updated_at: DataTypes.DATE
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE
   }, {
     sequelize,
-    modelName: 'post',
+    modelName: 'posts',
   });
   return post;
 };

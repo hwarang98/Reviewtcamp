@@ -36,9 +36,9 @@ export default function Signup() {
       .post(
         "https://localhost:8080/signup",
         {
-          name: name,
-          email: email,
-          password: password,
+          name,
+          email,
+          password,
         },
         {
           headers: { "Content-Type": "application/json" },
