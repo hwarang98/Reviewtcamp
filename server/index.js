@@ -9,7 +9,6 @@ const app = express();
 
 const { user } = require('./models/user'); 
 
-// console.log(user)
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -19,14 +18,15 @@ app.use(cookieParser());
 app.use(cors({
   origin: ['http://localhost:3000'],
   credentials: true,
-  methods: ['GET', 'POST', 'OPTIONS']
+  methods: ['GET', 'POST', 'OPTIONS','DELETE']
 }));
 
 app.get('/', (req, res, next) => {
   res.send('welcome home 😁');
 });
+
 app.post('/signup', controller.signup);
-// app.post('/signin', controller.signin);
+app.post('/signin', controller.signin);
 
 // app.get('/board', './controller/board.js')
 

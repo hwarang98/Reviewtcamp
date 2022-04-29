@@ -39,12 +39,13 @@ module.exports = async(req, res) => {
     };
 
     const { hashedPassword, salt } = createHashedPassword(password);
+    console.log('✅ salt: ', salt)
 
-    await users.create({
+    users.create({
       email,
       name,
       password: hashedPassword,
-      salt
+      salt,
     })
     .then((data) => {
       console.log('✅ data: ', data)
@@ -52,6 +53,9 @@ module.exports = async(req, res) => {
       delete data.dataValues.salt;
       res.status(200).json({ message : 'ok' })
     })
+    .catch((err) => {
+      return res.status(500).send("err");
+    });
   }
 
 };

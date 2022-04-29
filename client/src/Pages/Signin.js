@@ -30,9 +30,9 @@ export default function Signin(props) {
       setErrorMessage("비밀번호를 입력해주세요");
     } else {
       // POST 보냈으나 아이디 또는 비밀번호를 잘못 입력한 경우
-      // console.log("작동중?");
+      console.log("작동중?");
       axios
-        .post("https://localhost:4000/signin", {
+        .post("https://localhost:8080/signin", {
           email: email,
           password: password,
         })
@@ -41,7 +41,7 @@ export default function Signin(props) {
           if (res.data.token === undefined) {
             setErrorMessage("아이디 또는 비밀번호를 잘못 입력했습니다.");
           } else {
-            setAccessToken(res.data.accesstokenf);
+            setAccessToken(res.data.accessToken);
             props.loginHandler(res.data);
             // ! 로그인 완료 시 -> 메인 게시판 URI가 어딨지? -> 민주씨 메인 게시판으로 이동하기
             history.push("/");

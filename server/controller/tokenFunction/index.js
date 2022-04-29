@@ -4,8 +4,9 @@ const secret = process.env.ACCESS_SECRET;
 
 module.exports = {
     generateAccessToken: (data) => {
-        return sign(data, secret, { expiresIn: '1d' });
+        return sign(data, process.env.ACCESS_SECRET, { expiresIn: "1d" });
     },
+
     sendAccessToken: (res, accessToken) => {
         res.cookie("jwt", accessToken, {
             httpOnly: true,
@@ -13,19 +14,16 @@ module.exports = {
             secure: true,
         });
     },
-    
+
     isAuthorized: (req) => {
-        // JWT 토큰 정보를 받아서 검증
-        const cookie = req.headers["cookie"];
         const authorization = req.headers.authorization;
-        // console.log(cookie)
-        if (!cookie) {
-        return null;
+        if (!authorization) {
+            return null;
         }
         try {
-            return verify(authorization, secret);
+            return verify(authorization, process.env.ACCESS_SECRET);
         } catch (err) {
-            return null;
-            }
-        },
-    };
+        return null;
+        }
+    },
+};

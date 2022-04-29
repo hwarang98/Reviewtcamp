@@ -33,11 +33,11 @@ export default function Signup() {
   const handleSignup = () => {
     axios
       .post(
-        "https://localhost:4000/signup",
+        "https://localhost:8080/signup",
         {
-          name,
-          email,
-          password,
+          name: name,
+          email: email,
+          password: password,
         },
         {
           headers: { "Content-Type": "application/json" },
