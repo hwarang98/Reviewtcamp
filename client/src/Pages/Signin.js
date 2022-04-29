@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 export default function Signin(props) {
   // 로그인 정보 상태 저장
@@ -32,7 +32,7 @@ export default function Signin(props) {
       // POST 보냈으나 아이디 또는 비밀번호를 잘못 입력한 경우
       // console.log("작동중?");
       axios
-        .post("https://reviewtcamp.com/signin", {
+        .post("https://localhost:4000/signin", {
           email: email,
           password: password,
         })

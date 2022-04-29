@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 export default function Signup() {
   // 이메일, 이름, 패스워드 확인
@@ -31,10 +31,9 @@ export default function Signup() {
 
   // 회원가입 버튼을 누르면 post 요청
   const handleSignup = () => {
-    console.log("작동하니?");
     axios
       .post(
-        "https://localhost:8080/signup",
+        "https://localhost:4000/signup",
         {
           name,
           email,
@@ -65,6 +64,7 @@ export default function Signup() {
       setIsEmail(false);
     } else {
       setEmailMessage("멋진 아이디네요!");
+      setIsEmail(true);
     }
   }, []);
 
